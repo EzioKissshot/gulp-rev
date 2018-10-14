@@ -3,12 +3,19 @@ const path = require('path');
 const through = require('through2');
 const vinylFile = require('vinyl-file');
 const revHash = require('rev-hash');
-const revPath = require('./rev-path');
 // const revPath = require('rev-path');
 const sortKeys = require('sort-keys');
 const modifyFilename = require('modify-filename');
 const Vinyl = require('vinyl');
 const PluginError = require('plugin-error');
+
+function revPath(pth, hash){
+	if (!(pth && hash)) {
+		throw new Error('`path` and `hash` required');
+	}
+
+	return modifyFilename(pth, (filename, ext) => `${filename}.${hash}${ext}`);
+};
 
 function relPath(base, filePath) {
 	filePath = filePath.replace(/\\/g, '/');
